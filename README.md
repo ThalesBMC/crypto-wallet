@@ -1,4 +1,4 @@
-![Dashboard](./assets/images/dashboard.png)
+![Dashboard](dashboard.png)
 
 # Rainbow Wallet Demo
 
