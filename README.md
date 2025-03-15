@@ -1,3 +1,5 @@
+![Dashboard](./assets/images/dashboard.png)
+
 # Rainbow Wallet Demo
 
 A simple yet powerful cryptocurrency wallet demo showcasing wallet creation, management, and token balance viewing capabilities across multiple networks.
@@ -5,11 +7,14 @@ A simple yet powerful cryptocurrency wallet demo showcasing wallet creation, man
 ## Features
 
 - Secure wallet creation with seed phrase backup
-- Support for Base and Polygon networks
-- View top 5 most common tokens per network
+- Support for Ethereum and Base networks
+- View native token and top tokens per network
 - Clean and modern UI with dark theme
 - Offline-capable with local storage of wallet data
 - Extensible architecture for adding new networks
+- Wallet address book with famous addresses
+- Balance hiding for privacy
+- Share and copy wallet address functionality
 
 ## Tech Stack
 
@@ -19,27 +24,29 @@ A simple yet powerful cryptocurrency wallet demo showcasing wallet creation, man
 - Zustand for state management
 - Expo SecureStore for secure storage
 - Expo Router for navigation
+- Expo Blur for UI effects
+- React Native Bottom Sheet
 
 ## Getting Started
 
 1. Install dependencies:
 
 ```bash
-pnpm install
+npm install
 ```
 
 2. Start the development server:
 
 ```bash
-pnpm start
+npm start
 ```
 
 3. Run on iOS or Android:
 
 ```bash
-pnpm ios
+npm run ios
 # or
-pnpm android
+npm run android
 ```
 
 ## Project Structure
@@ -50,7 +57,7 @@ pnpm android
   ├── /components      # Reusable UI components
   ├── /store          # Zustand state management
   ├── /config         # Network and token configurations
-  └── /services       # Wallet and network services
+  └── /assets         # Images and other static assets
 ```
 
 ## Security Features
@@ -59,24 +66,26 @@ pnpm android
 - No cloud storage of sensitive data
 - All wallet operations are performed locally
 - Network requests only for reading blockchain data
+- Secure balance hiding option
 
 ## Supported Networks
 
+### Ethereum
+
+- Native ETH
+- USDC
+- WBTC
+- WETH
+- DAI
+
 ### Base
 
-- DAI
+- Native ETH
+- USDC
+- WBTC
 - WETH
 - USDbC
-- COMP
-- USDT
-
-### Polygon
-
-- WMATIC
-- WETH
-- USDC
-- USDT
-- WBTC
+- DAI
 
 ## Contributing
 
