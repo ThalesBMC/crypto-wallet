@@ -1,26 +1,27 @@
-import { View, ActivityIndicator, StyleSheet } from "react-native";
 import { Redirect } from "expo-router";
 import { useWalletStore } from "./store/walletStore";
+import { View, ActivityIndicator, StyleSheet } from "react-native";
+import { palette } from "./constants/Colors";
 
 export default function Index() {
-  const { isWalletCreated, isLoading } = useWalletStore();
+  const { address, isLoading } = useWalletStore();
 
   if (isLoading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#FF007A" />
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color={palette.pink[500]} />
       </View>
     );
   }
 
-  return <Redirect href={isWalletCreated ? "/wallet" : "/create"} />;
+  return <Redirect href={address ? "/wallet" : "/create"} />;
 }
 
 const styles = StyleSheet.create({
-  loadingContainer: {
+  container: {
     flex: 1,
+    backgroundColor: palette.gray[900],
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#1a1a1a",
   },
 });

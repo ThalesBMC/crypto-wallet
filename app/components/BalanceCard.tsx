@@ -12,6 +12,7 @@ import BottomSheet, {
 import { Portal } from "@gorhom/portal";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { RainbowLogo } from "./RainbowLogo";
+import { colors, palette } from "../constants/Colors";
 
 interface BalanceCardProps {
   balance: string;
@@ -37,10 +38,6 @@ export const BalanceCard = ({
 
   const handleClose = useCallback(() => {
     bottomSheetRef.current?.close();
-  }, []);
-
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
   }, []);
 
   const renderBackdrop = useCallback(
@@ -103,7 +100,7 @@ export const BalanceCard = ({
   return (
     <>
       <LinearGradient
-        colors={["#FF007A", "#C800FF"]}
+        colors={[palette.pink[500], palette.purple[500]]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.card}
@@ -120,16 +117,16 @@ export const BalanceCard = ({
               style={styles.eyeButton}
             >
               <Ionicons
-                name={showBalance ? "eye-off" : "eye"}
+                name={showBalance ? "eye" : "eye-off"}
                 size={20}
-                color="#fff"
+                color={palette.white}
               />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={handleDeleteWallet}
               style={styles.deleteButton}
             >
-              <Ionicons name="trash-outline" size={20} color="#fff" />
+              <Ionicons name="trash-outline" size={20} color={palette.white} />
             </TouchableOpacity>
           </View>
         </View>
@@ -148,12 +145,12 @@ export const BalanceCard = ({
             style={styles.actionButton}
             onPress={handlePresentReceive}
           >
-            <Ionicons name="arrow-down" size={20} color="#FF007A" />
+            <Ionicons name="arrow-down" size={20} color={palette.pink[500]} />
             <Text style={styles.actionText}>Receive</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.actionButton} onPress={handleSend}>
-            <Ionicons name="arrow-up" size={20} color="#FF007A" />
+            <Ionicons name="arrow-up" size={20} color={palette.pink[500]} />
             <Text style={styles.actionText}>Send</Text>
           </TouchableOpacity>
         </View>
@@ -164,7 +161,6 @@ export const BalanceCard = ({
           ref={bottomSheetRef}
           index={-1}
           snapPoints={snapPoints}
-          onChange={handleSheetChanges}
           enablePanDownToClose
           backdropComponent={renderBackdrop}
           backgroundStyle={styles.bottomSheetBackground}
@@ -179,7 +175,7 @@ export const BalanceCard = ({
                 onPress={handleClose}
                 style={styles.closeButton}
               >
-                <Ionicons name="close" size={24} color="#fff" />
+                <Ionicons name="close" size={24} color={palette.white} />
               </TouchableOpacity>
             </View>
 
@@ -189,11 +185,15 @@ export const BalanceCard = ({
               onPress={handleCopyAddress}
             >
               <Text style={styles.address}>{address}</Text>
-              <Ionicons name="copy-outline" size={20} color="#FF007A" />
+              <Ionicons
+                name="copy-outline"
+                size={20}
+                color={palette.pink[500]}
+              />
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.shareButton} onPress={handleShare}>
-              <Ionicons name="share-outline" size={20} color="#fff" />
+              <Ionicons name="share-outline" size={20} color={palette.white} />
               <Text style={styles.shareButtonText}>Share Address</Text>
             </TouchableOpacity>
           </BottomSheetView>
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    color: "rgba(255, 255, 255, 0.7)",
+    color: colors.dark.balanceCardMutedText,
   },
   eyeButton: {
     padding: 4,
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
   balance: {
     fontSize: 32,
     fontWeight: "bold",
-    color: "#fff",
+    color: palette.white,
     marginBottom: 8,
   },
   changeContainer: {
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
   },
   changeText: {
     fontSize: 14,
-    color: "rgba(255, 255, 255, 0.7)",
+    color: colors.dark.balanceCardMutedText,
   },
   actions: {
     flexDirection: "row",
@@ -251,26 +251,26 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#fff",
+    backgroundColor: palette.white,
     padding: 12,
     borderRadius: 100,
     gap: 8,
   },
   actionText: {
-    color: "#FF007A",
+    color: palette.pink[500],
     fontSize: 16,
     fontWeight: "600",
   },
   bottomSheetBackground: {
-    backgroundColor: "#1a1a1a",
+    backgroundColor: palette.gray[900],
   },
   bottomSheetIndicator: {
-    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    backgroundColor: colors.dark.walletSelectorBottomSheetIndicator,
     width: 40,
   },
   modalContent: {
     flex: 1,
-    backgroundColor: "#1a1a1a",
+    backgroundColor: palette.gray[900],
     padding: 20,
   },
   modalHeader: {
@@ -282,20 +282,20 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#fff",
+    color: palette.white,
   },
   closeButton: {
     padding: 4,
   },
   addressLabel: {
     fontSize: 14,
-    color: "#a0a0a0",
+    color: palette.gray[400],
     marginBottom: 8,
   },
   addressContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.05)",
+    backgroundColor: colors.dark.balanceCardAddressBackground,
     borderRadius: 12,
     padding: 16,
     gap: 8,
@@ -304,20 +304,20 @@ const styles = StyleSheet.create({
   address: {
     flex: 1,
     fontSize: 16,
-    color: "#fff",
+    color: palette.white,
     fontFamily: "monospace",
   },
   shareButton: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#FF007A",
+    backgroundColor: palette.pink[500],
     padding: 16,
     borderRadius: 12,
     gap: 8,
   },
   shareButtonText: {
-    color: "#fff",
+    color: palette.white,
     fontSize: 16,
     fontWeight: "600",
   },
@@ -330,3 +330,5 @@ const styles = StyleSheet.create({
     padding: 4,
   },
 });
+
+export default BalanceCard;

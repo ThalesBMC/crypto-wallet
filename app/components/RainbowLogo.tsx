@@ -6,7 +6,7 @@ type RainbowLogoProps = {
   style?: any;
 };
 
-export function RainbowLogo({ width = 40, style }: RainbowLogoProps) {
+export const RainbowLogo = ({ width = 40, style }: RainbowLogoProps) => {
   return (
     <View style={[styles.container, style]}>
       <Image
@@ -16,7 +16,7 @@ export function RainbowLogo({ width = 40, style }: RainbowLogoProps) {
       />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -26,3 +26,5 @@ const styles = StyleSheet.create({
     gap: 4,
   },
 });
+
+export default RainbowLogo;

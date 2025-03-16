@@ -1,5 +1,10 @@
 import React, { useCallback, useMemo, useRef } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  useColorScheme,
+} from "react-native";
 import { Text } from "./Themed";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -8,28 +13,16 @@ import BottomSheet, {
   BottomSheetBackdrop,
 } from "@gorhom/bottom-sheet";
 import { Portal } from "@gorhom/portal";
+import { WalletKey, WalletAddresses } from "../config/wallets";
+import { palette, colors } from "@/app/constants/Colors";
+import { getWalletName } from "../utils/wallet";
+import { formatAddress } from "../utils/formatAddress";
 
 interface WalletSelectorProps {
-  selectedWallet: string;
-  onSelectWallet: (walletId: string) => void;
-  wallets: {
-    [key: string]: string;
-  };
+  selectedWallet: WalletKey;
+  onSelectWallet: (walletId: WalletKey) => void;
+  wallets: WalletAddresses;
 }
-const WALLET_NAME_MAP: { [key: string]: string } = {
-  "my-wallet": "My Wallet",
-  vitalik: "Vitalik",
-  "cz-binance": "CZ Binance",
-};
-
-const getWalletName = (id: string) => {
-  return WALLET_NAME_MAP[id] || "Unknown Wallet";
-};
-
-const formatAddress = (address: string) => {
-  if (!address) return "";
-  return `${address.slice(0, 6)}...${address.slice(-4)}`;
-};
 
 export const WalletSelector = ({
   selectedWallet,
@@ -65,22 +58,21 @@ export const WalletSelector = ({
     []
   );
 
-  const selectedWalletName = getWalletName(selectedWallet);
-  const selectedWalletAddress = wallets[selectedWallet];
-
   return (
     <>
       <TouchableOpacity style={styles.selector} onPress={handlePresentPress}>
         <View style={styles.avatar}>
-          <Text style={styles.avatarText}>{selectedWalletName.charAt(0)}</Text>
-        </View>
-        <View style={styles.walletInfo}>
-          <Text style={styles.walletName}>{selectedWalletName}</Text>
-          <Text style={styles.walletAddress}>
-            {formatAddress(selectedWalletAddress)}
+          <Text style={styles.avatarText}>
+            {getWalletName(selectedWallet).charAt(0)}
           </Text>
         </View>
-        <Ionicons name="chevron-down" size={20} color="#fff" />
+        <View style={styles.walletInfo}>
+          <Text style={styles.walletName}>{getWalletName(selectedWallet)}</Text>
+          <Text style={styles.walletAddress}>
+            {formatAddress(wallets[selectedWallet])}
+          </Text>
+        </View>
+        <Ionicons name="chevron-down" size={20} color={palette.white} />
       </TouchableOpacity>
 
       <Portal>
@@ -103,38 +95,44 @@ export const WalletSelector = ({
                 onPress={handleClose}
                 style={styles.closeButton}
               >
-                <Ionicons name="close" size={24} color="#fff" />
+                <Ionicons name="close" size={24} color={palette.white} />
               </TouchableOpacity>
             </View>
 
-            {Object.entries(wallets).map(([id, address]) => (
-              <TouchableOpacity
-                key={id}
-                style={[
-                  styles.walletItem,
-                  selectedWallet === id && styles.selectedWallet,
-                ]}
-                onPress={() => {
-                  onSelectWallet(id);
-                  handleClose();
-                }}
-              >
-                <View style={styles.avatar}>
-                  <Text style={styles.avatarText}>
-                    {getWalletName(id).charAt(0)}
-                  </Text>
-                </View>
-                <View style={styles.walletInfo}>
-                  <Text style={styles.walletName}>{getWalletName(id)}</Text>
-                  <Text style={styles.walletAddress}>
-                    {formatAddress(address)}
-                  </Text>
-                </View>
-                {selectedWallet === id && (
-                  <Ionicons name="checkmark" size={24} color="#FF007A" />
-                )}
-              </TouchableOpacity>
-            ))}
+            {(Object.entries(wallets) as [WalletKey, string][]).map(
+              ([id, address]) => (
+                <TouchableOpacity
+                  key={id}
+                  style={[
+                    styles.walletItem,
+                    selectedWallet === id && styles.selectedWallet,
+                  ]}
+                  onPress={() => {
+                    onSelectWallet(id);
+                    handleClose();
+                  }}
+                >
+                  <View style={styles.avatar}>
+                    <Text style={styles.avatarText}>
+                      {getWalletName(id).charAt(0)}
+                    </Text>
+                  </View>
+                  <View style={styles.walletInfo}>
+                    <Text style={styles.walletName}>{getWalletName(id)}</Text>
+                    <Text style={styles.walletAddress}>
+                      {formatAddress(address)}
+                    </Text>
+                  </View>
+                  {selectedWallet === id && (
+                    <Ionicons
+                      name="checkmark"
+                      size={24}
+                      color={palette.pink[500]}
+                    />
+                  )}
+                </TouchableOpacity>
+              )
+            )}
           </BottomSheetView>
         </BottomSheet>
       </Portal>
@@ -147,7 +145,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     padding: 12,
-    backgroundColor: "rgba(255, 255, 255, 0.05)",
+    backgroundColor: colors.dark.walletSelectorBackground,
     borderRadius: 12,
     marginHorizontal: 16,
     marginBottom: 16,
@@ -156,7 +154,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#FF007A",
+    backgroundColor: colors.dark.walletSelectorAvatar,
     alignItems: "center",
     justifyContent: "center",
     marginRight: 12,
@@ -164,7 +162,7 @@ const styles = StyleSheet.create({
   avatarText: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#fff",
+    color: colors.dark.walletSelectorText,
   },
   walletInfo: {
     flex: 1,
@@ -173,22 +171,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     marginBottom: 4,
-    color: "#fff",
+    color: colors.dark.walletSelectorText,
   },
   walletAddress: {
     fontSize: 12,
-    color: "rgba(255, 255, 255, 0.7)",
+    color: colors.dark.walletSelectorAddressText,
   },
   bottomSheetBackground: {
-    backgroundColor: "#1a1a1a",
+    backgroundColor: colors.dark.walletSelectorBottomSheet,
   },
   bottomSheetIndicator: {
-    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    backgroundColor: colors.dark.walletSelectorBottomSheetIndicator,
     width: 40,
   },
   modalContent: {
     flex: 1,
-    backgroundColor: "#1a1a1a",
+    backgroundColor: colors.dark.walletSelectorBottomSheet,
     padding: 20,
   },
   modalHeader: {
@@ -200,7 +198,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#fff",
+    color: colors.dark.walletSelectorText,
   },
   closeButton: {
     padding: 4,
@@ -213,6 +211,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   selectedWallet: {
-    backgroundColor: "rgba(255, 0, 122, 0.1)",
+    backgroundColor: colors.dark.walletSelectorSelectedBackground,
   },
 });
+
+export default WalletSelector;

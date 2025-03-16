@@ -3,8 +3,9 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "./Themed";
 import { Ionicons } from "@expo/vector-icons";
 import { FlashList } from "@shopify/flash-list";
-import { Token } from "../config/networks";
+import { Token } from "@/types/token/Token";
 import { ethers } from "ethers";
+import { colors } from "@/constants/Colors";
 
 type SortOption =
   | "name"
@@ -157,10 +158,12 @@ export const TokenList = ({ tokens, balances, isLoading }: TokenListProps) => {
   );
 };
 
+export default TokenList;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "rgba(255, 255, 255, 0.05)",
+    backgroundColor: colors.dark.tokenListBackground,
     borderRadius: 20,
     margin: 16,
     overflow: "hidden",
@@ -171,17 +174,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "rgba(255, 255, 255, 0.1)",
+    borderBottomColor: colors.dark.tokenListBorder,
   },
   title: {
     fontSize: 16,
-    color: "#fff",
+    color: colors.dark.textPrimary,
     fontWeight: "600",
   },
   sortButton: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    backgroundColor: colors.dark.tokenListSortButton,
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 100,
@@ -189,13 +192,13 @@ const styles = StyleSheet.create({
   },
   sortButtonText: {
     fontSize: 14,
-    color: "#fff",
+    color: colors.dark.textPrimary,
   },
   sortMenu: {
     position: "absolute",
     top: 60,
     right: 16,
-    backgroundColor: "#2a2a2a",
+    backgroundColor: colors.dark.tokenListSortMenu,
     borderRadius: 12,
     padding: 8,
     zIndex: 1,
@@ -207,10 +210,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   selectedSort: {
-    backgroundColor: "rgba(255, 0, 122, 0.1)",
+    backgroundColor: colors.dark.walletSelectorSelectedBackground,
   },
   sortOptionText: {
-    color: "#fff",
+    color: colors.dark.textPrimary,
     fontSize: 14,
   },
   tokenItem: {
@@ -218,13 +221,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "rgba(255, 255, 255, 0.1)",
+    borderBottomColor: colors.dark.tokenListBorder,
   },
   tokenIcon: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#FF007A",
+    backgroundColor: colors.dark.tokenListTokenIcon,
     alignItems: "center",
     justifyContent: "center",
     marginRight: 12,
@@ -232,20 +235,20 @@ const styles = StyleSheet.create({
   tokenIconText: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#fff",
+    color: colors.dark.textPrimary,
   },
   tokenInfo: {
     flex: 1,
   },
   tokenSymbol: {
-    color: "#fff",
+    color: colors.dark.textPrimary,
     fontSize: 16,
     fontWeight: "600",
     marginBottom: 4,
   },
   tokenName: {
     fontSize: 14,
-    color: "#a0a0a0",
+    color: colors.dark.tokenListMutedText,
   },
   tokenValues: {
     alignItems: "flex-end",
@@ -254,11 +257,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     marginBottom: 4,
-    color: "#fff",
+    color: colors.dark.textPrimary,
   },
   tokenUsdValue: {
     fontSize: 14,
-    color: "#a0a0a0",
+    color: colors.dark.tokenListMutedText,
   },
   loadingText: {
     opacity: 0.5,

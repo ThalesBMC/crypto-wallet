@@ -1,13 +1,12 @@
 import { create } from "zustand";
 import "react-native-get-random-values";
 import "@ethersproject/shims";
-import { Wallet, ethers } from "ethers";
+import { Wallet } from "ethers";
 import * as SecureStore from "expo-secure-store";
-import { Network } from "../config/networks";
-import { NETWORKS } from "../config/networks";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Network } from "@/types/network/Network";
+import { NETWORKS } from "@/config/networks";
 
-// Vitalik's address for testing
-const TEST_ADDRESS = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
 const BALANCES_STORAGE_KEY = "WALLET_BALANCES";
 
 interface WalletState {
@@ -26,7 +25,6 @@ interface WalletState {
     balance: string
   ) => Promise<void>;
   loadCachedBalances: () => Promise<void>;
-  importWallet: (seedPhrase: string) => Promise<void>;
   disconnect: () => Promise<void>;
 }
 
@@ -35,16 +33,7 @@ const ENCRYPTED_SEED_PHRASE_KEY = "ENCRYPTED_SEED_PHRASE";
 
 const encryptSeedPhrase = async (seedPhrase: string): Promise<string> => {
   // In a production app, implement proper encryption here
-  // This is a simplified version for demonstration
   return seedPhrase;
-};
-
-const decryptSeedPhrase = async (
-  encryptedSeedPhrase: string
-): Promise<string> => {
-  // In a production app, implement proper decryption here
-  // This is a simplified version for demonstration
-  return encryptedSeedPhrase;
 };
 
 export const useWalletStore = create<WalletState>((set, get) => ({
@@ -83,9 +72,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
 
   loadCachedBalances: async () => {
     try {
-      const cachedBalances = await SecureStore.getItemAsync(
-        BALANCES_STORAGE_KEY
-      );
+      const cachedBalances = await AsyncStorage.getItem(BALANCES_STORAGE_KEY);
       if (cachedBalances) {
         set({ balances: JSON.parse(cachedBalances) });
       }
@@ -119,28 +106,6 @@ export const useWalletStore = create<WalletState>((set, get) => ({
     }
   },
 
-  importWallet: async (seedPhrase: string) => {
-    try {
-      const wallet = ethers.Wallet.fromMnemonic(seedPhrase);
-      const encryptedSeedPhrase = await encryptSeedPhrase(seedPhrase);
-
-      await SecureStore.setItemAsync(
-        ENCRYPTED_SEED_PHRASE_KEY,
-        encryptedSeedPhrase
-      );
-      await SecureStore.setItemAsync(WALLET_ADDRESS_KEY, wallet.address);
-
-      set({
-        address: wallet.address,
-        isInitialized: true,
-        isWalletCreated: true,
-      });
-    } catch (error) {
-      console.error("Failed to import wallet:", error);
-      throw new Error("Failed to import wallet");
-    }
-  },
-
   setSelectedNetwork: (network: Network) => {
     set({ selectedNetwork: network });
   },
@@ -159,8 +124,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
         },
       };
 
-      // Save to SecureStore
-      SecureStore.setItemAsync(
+      AsyncStorage.setItem(
         BALANCES_STORAGE_KEY,
         JSON.stringify(newBalances)
       ).catch((error) => console.error("Failed to save balances:", error));
@@ -174,7 +138,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
       set({ isLoading: true });
       await SecureStore.deleteItemAsync(WALLET_ADDRESS_KEY);
       await SecureStore.deleteItemAsync(ENCRYPTED_SEED_PHRASE_KEY);
-      await SecureStore.deleteItemAsync(BALANCES_STORAGE_KEY);
+      await AsyncStorage.removeItem(BALANCES_STORAGE_KEY);
       set({
         address: null,
         selectedNetwork: NETWORKS[0],

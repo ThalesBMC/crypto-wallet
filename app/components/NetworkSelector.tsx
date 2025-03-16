@@ -8,7 +8,8 @@ import BottomSheet, {
   BottomSheetBackdrop,
 } from "@gorhom/bottom-sheet";
 import { Portal } from "@gorhom/portal";
-import { Network } from "../config/networks";
+import { Network } from "@/types/network/Network";
+import { colors } from "@/constants/Colors";
 
 interface NetworkSelectorProps {
   selectedNetwork: Network;
@@ -31,10 +32,6 @@ export const NetworkSelector = ({
 
   const handleClose = useCallback(() => {
     bottomSheetRef.current?.close();
-  }, []);
-
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
   }, []);
 
   const renderBackdrop = useCallback(
@@ -72,7 +69,6 @@ export const NetworkSelector = ({
           ref={bottomSheetRef}
           index={-1}
           snapPoints={snapPoints}
-          onChange={handleSheetChanges}
           enablePanDownToClose
           backdropComponent={renderBackdrop}
           backgroundStyle={styles.bottomSheetBackground}
@@ -131,7 +127,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     padding: 12,
-    backgroundColor: "rgba(255, 255, 255, 0.05)",
+    backgroundColor: colors.dark.networkSelectorBackground,
     borderRadius: 12,
     marginHorizontal: 16,
     marginBottom: 16,
@@ -140,7 +136,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#4F46E5",
+    backgroundColor: colors.dark.networkSelectorIcon,
     alignItems: "center",
     justifyContent: "center",
     marginRight: 12,
@@ -148,7 +144,7 @@ const styles = StyleSheet.create({
   networkIconText: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#fff",
+    color: colors.dark.networkSelectorText,
   },
   networkInfo: {
     flex: 1,
@@ -157,22 +153,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     marginBottom: 4,
-    color: "#fff",
+    color: colors.dark.networkSelectorText,
   },
   chainId: {
     fontSize: 12,
-    color: "rgba(255, 255, 255, 0.7)",
+    color: colors.dark.networkSelectorMutedText,
   },
   bottomSheetBackground: {
-    backgroundColor: "#1a1a1a",
+    backgroundColor: colors.dark.networkSelectorBottomSheet,
   },
   bottomSheetIndicator: {
-    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    backgroundColor: colors.dark.walletSelectorBottomSheetIndicator,
     width: 40,
   },
   modalContent: {
     flex: 1,
-    backgroundColor: "#1a1a1a",
+    backgroundColor: colors.dark.networkSelectorBottomSheet,
     padding: 20,
   },
   modalHeader: {
@@ -184,7 +180,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#fff",
+    color: colors.dark.networkSelectorText,
   },
   closeButton: {
     padding: 4,
@@ -197,6 +193,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   selectedNetwork: {
-    backgroundColor: "rgba(79, 70, 229, 0.1)",
+    backgroundColor: colors.dark.networkSelectorSelectedBackground,
   },
 });
+
+export default NetworkSelector;

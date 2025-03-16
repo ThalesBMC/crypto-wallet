@@ -1,4 +1,6 @@
-![Dashboard](dashboard.png)
+<div align="center">
+  <img src="dashboard.png" alt="Dashboard" />
+</div>
 
 # Rainbow Wallet Demo
 

@@ -1,26 +1,4 @@
-export interface Token {
-  address: string;
-  symbol: string;
-  decimals: number;
-  name: string;
-  balance?: string;
-  price?: number;
-  change?: number;
-}
-
-export interface Network {
-  id: string;
-  name: string;
-  rpcUrl: string;
-  chainId: number;
-  nativeToken: {
-    symbol: string;
-    decimals: number;
-    name: string;
-    price: number;
-  };
-  tokens: Token[];
-}
+import { Network } from "../types";
 
 export const NETWORKS: Network[] = [
   {
@@ -32,7 +10,7 @@ export const NETWORKS: Network[] = [
       symbol: "ETH",
       decimals: 18,
       name: "Ethereum",
-      price: 3500,
+      price: 2000,
     },
     tokens: [
       {
@@ -74,7 +52,7 @@ export const NETWORKS: Network[] = [
       symbol: "ETH",
       decimals: 18,
       name: "Ethereum",
-      price: 3500,
+      price: 2000,
     },
     tokens: [
       {
