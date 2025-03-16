@@ -59,7 +59,6 @@ npm run android
   ├── /components      # Reusable UI components
   ├── /store          # Zustand state management
   ├── /config         # Network and token configurations
-  └── /assets         # Images and other static assets
 ```
 
 ## Security Features
@@ -88,7 +87,3 @@ npm run android
 - WETH
 - USDbC
 - DAI
-
-## Contributing
-
-Feel free to submit issues and enhancement requests!
