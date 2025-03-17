@@ -2,7 +2,7 @@
   <img src="dashboard.png" alt="Dashboard" />
 </div>
 
-# Rainbow Wallet Demo
+# Wallet Demo
 
 A simple yet powerful cryptocurrency wallet demo showcasing wallet creation, management, and token balance viewing capabilities across multiple networks.
 
